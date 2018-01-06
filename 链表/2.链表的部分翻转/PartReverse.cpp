@@ -93,8 +93,10 @@ public:
 		if(head == NULL){
 			return false;
 		}
-		Node<Type> *current_node = head;
-		int count = 0;
+		Node<Type> *phead = new Node<Type>(-1);
+		phead->next = head;
+		Node<Type> *current_node = phead;
+		int count = -1;
 		while(current_node->next != NULL && count < from - 1){
 			current_node = current_node->next;
 			count++;
@@ -113,6 +115,7 @@ public:
 				pre_node = pre_node->next;
 			}
 			pre_node->next = current_node;
+			head = phead->next;
 			return true;
 		}
 		return false;
