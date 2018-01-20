@@ -1,1 +1,1 @@
-# BATAlgorithm
+Algorithm
