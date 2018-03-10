@@ -88,26 +88,15 @@ public:
 			p2 = p2->next;
 		}
 		//处理较长的链
-		if(p1 != NULL){
-			while(p1 != NULL){
-                data = p1->data + carry;
+		Node<int> *ph = p1 ? p1 : p2;
+		while(ph != NULL){
+                data = ph->data + carry;
                 carry = data / 10;
                 data = data % 10;
                 Node<int> *new_node = new Node<int>(data);
                 sum->insert(new_node, index);
                 index++;
-                p1 = p1->next;
-			}
-		}else{
-			while(p2 != NULL){
-                data = p2->data + carry;
-                carry = data / 10;
-                data = data % 10;
-                Node<int> *new_node = new Node<int>(data);
-                sum->insert(new_node, index);
-                index++;
-                p2 = p2->next;
-			}
+                ph = ph->next;
 		}
 		//处理可能的进位
 		if(carry != 0){
@@ -144,3 +133,4 @@ int main(){
 	sum->output();
     return 0;
 }
+
