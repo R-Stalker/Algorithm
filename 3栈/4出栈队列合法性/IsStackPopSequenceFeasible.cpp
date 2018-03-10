@@ -47,7 +47,7 @@ bool IsPossible(const char* strIn, const char* strOut){
 			s.pop();
 			strOut++;
 		}else{
-			if(*strIn == 0){
+			if(*strIn == NULL){
 				return false;
 			}
 			s.push(*strIn);

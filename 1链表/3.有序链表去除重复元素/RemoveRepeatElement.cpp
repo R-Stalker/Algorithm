@@ -62,14 +62,15 @@ public:
 		if(head == NULL){
 			return;
 		}
-		Node<Type> *current_node = head;
-		while(current_node->next != NULL){
-			if(current_node->data == current_node->next->data){
-				Node<Type> *delete_node = current_node->next;
-				current_node->next = delete_node->next;
-				delete delete_node;
+		Node<Type> *pre_node = head;
+		Node<Type> *cur_node;
+		while(pre_node){
+            cur_node = pre_node->next;
+			if(cur_node && pre_node->data == cur_node->data){
+				pre_node->next = cur_node->next;
+				delete cur_node;
 			}else{
-			    current_node = current_node->next;
+			    pre_node = cur_node;
 			}
 		}
 	}
