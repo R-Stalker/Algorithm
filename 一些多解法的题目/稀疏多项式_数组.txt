@@ -1,0 +1,75 @@
+#include <iostream>
+#include <cstring>
+#include <math.h>
+using std::cin;
+using std::cout;
+using std::endl;
+
+template <typename Type> class Vector{
+private:
+    int length, size;
+    Type *data_c, *data_e;
+public:
+    Vector(int input_size){
+        size = input_size;
+        length = 0;
+        data_c = new Type[size];
+        data_e = new Type[size];
+    }
+    ~Vector(){
+        delete[] data_c;
+        delete[] data_e;
+    }
+    bool insert(const Type &c, const Type &e, int index){
+        if(index < 0 || index > length){
+            return false;
+        }
+        if(length >= size){
+            expand();
+        }
+        for(int i = length; i > index; i--){
+            data_c[i] = data_c[i-1];
+            data_e[i] = data_e[i-1];
+        }
+        data_c[index] = c;
+        data_e[index] = e;
+        length++;
+        return true;
+    }
+    void expand(){
+        Type *old_data_c = data_c;
+        Type *old_data_e = data_e;
+        size = size * 2;
+        data_c = new Type[size];
+        data_e = new Type[size];
+        for(int i = 0; i < length; i++){
+            data_c[i] = old_data_c[i];
+            data_e[i] = old_data_e[i];
+        }
+        delete[] old_data_c;
+        delete[] old_data_e;
+    }
+    int get_result(const int &x){
+        int result = 0;
+        for(int i = 0; i < length; i++){
+            result += data_c[i] * pow(x, data_e[i]);
+        }
+        return result;
+    }
+};
+
+
+int main(){
+    int m;
+    cin >> m;
+    Vector<int> vector(m);
+    for(int i = 0; i < m; i++){
+        int c, e;
+        cin >> c >> e;
+        vector.insert(c, e, i);
+    }
+    int x;
+    cin >> x;
+    cout << vector.get_result(x) << endl;
+    return 0;
+}

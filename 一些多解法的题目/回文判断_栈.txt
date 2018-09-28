@@ -1,0 +1,70 @@
+#include <iostream>
+#include <string>
+#include <cassert>
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+
+template <typename Type> class Stack{
+private:
+    int max_size, top_index;
+    Type *elements;
+public:
+    Stack(int input_length){
+        elements = new Type[input_length];
+        max_size = input_length;
+        top_index = -1;
+    }
+    ~Stack(){
+        delete[] elements;
+    }
+    bool push(const Type &element){
+        if(top_index + 1 >= max_size){
+            return false;
+        }
+        top_index++;
+        elements[top_index] = element;
+        return true;
+    }
+    bool empty(){
+        return top_index < 0;
+    }
+    Type top(){
+        assert(top_index >= 0);
+        return elements[top_index];
+    }
+    void pop(){
+        top_index--;
+    }
+};
+
+int main(){
+    Stack<char> stack(20);
+    Stack<char> stack_temp(20);
+    Stack<char> stack_reverse(20);
+    string str;
+    cin >> str;
+    int i = 0;
+    if(str[i] == '@'){
+        cout << "true" << endl;
+        return 0;
+    }
+    while(str[i] != '@'){
+        stack.push(str[i]);
+        stack_temp.push(str[i]);
+        i++;
+    }
+    while(!stack_temp.empty()){
+        stack_reverse.push(stack_temp.top());
+        stack_temp.pop();
+    }
+    for(int i = 0; i <= str.length()/2; i++){
+        if(stack.top() != stack_reverse.top()){
+            cout << "false" << endl;
+            return 0;
+        }
+    }
+    cout << "true" << endl;
+    return 0;
+}

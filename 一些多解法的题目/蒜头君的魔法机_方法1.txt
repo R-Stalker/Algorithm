@@ -1,0 +1,76 @@
+#include <iostream>
+#include <cassert>
+using std::cin;
+using std::cout;
+using std::endl;
+
+template <typename Type> class Stack{
+private:
+    Type *elements;
+    int max_size, top_index;
+public:
+    Stack(int size_input){
+        elements = new Type[size_input];
+        max_size = size_input;
+        top_index = -1;
+    }
+    ~Stack(){
+        delete[] elements;
+    }
+    bool push(Type element){
+        if(top_index >= max_size - 1){
+            return false;
+        }
+        top_index++;
+        elements[top_index] = element;
+        return true;
+    }
+    bool pop(){
+        if(top_index < 0){
+            return false;
+        }
+        top_index--;
+        return true;
+    }
+    bool empty(){
+        return top_index<0;
+    }
+    Type top(){
+        assert(top_index >= 0);
+        return elements[top_index];
+    }
+};
+
+int main()
+{
+    int n;
+    cin >> n;
+    int *arr = new int[n];
+    Stack<int> stack(n);
+    for(int i = 0; i < n; i++){
+        int element;
+        cin >> element;
+        arr[i] = element;
+    }
+    int num = 1;
+    int count = 0;
+    for(int i = 0; i < n; i++){
+        while(stack.empty() || stack.top() != arr[i]){
+            if(num > n){
+                break;
+            }
+            stack.push(num);
+            num++;
+        }
+        if(stack.top() == arr[i]){
+            stack.pop();
+            count++;
+        }
+    }
+    if(stack.empty() && count == n){
+        cout << "YES" << endl;
+    }else{
+        cout << "NO" << endl;
+    }
+    return 0;
+}

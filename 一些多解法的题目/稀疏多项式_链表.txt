@@ -1,0 +1,86 @@
+https://www.jisuanke.com/course/629/30450
+
+#include <iostream>
+#include <math.h>
+using std::cin;
+using std::cout;
+using std::endl;
+
+template <typename Type> class Node{
+public:
+    Type c;
+    Type e;
+    Node<Type> *next;
+    Node(const Type &input_c, const Type &input_e){
+        c = input_c;
+        e = input_e;
+        next = NULL;
+    }
+};
+template <typename Type> class Sparse_polynomia{
+private:
+    Node<Type> *head;
+public:
+    Sparse_polynomia(){
+        head = NULL;
+    }
+    ~Sparse_polynomia(){
+        Node<Type> *current_node = head;
+        while(current_node->next != NULL){
+            Node<Type> *delete_node = current_node;
+            current_node = current_node->next;
+            delete delete_node;   
+        }
+    }
+    bool insert(Node<Type> *node, int index){
+        if(head == NULL){
+            if(index != 0){
+                return false;
+            }
+            head = node;
+            return true;
+        }
+        if(index == 0){
+            node->next = head;
+            head = node;
+            return true;
+        }
+        Node<Type> *current_node = head;
+        int count = 0;
+        while(current_node->next != NULL && count < index-1){
+            current_node = current_node->next;
+            count++;
+        }
+        if(count == index-1){
+            node->next = current_node->next;
+            current_node->next = node;
+            return true;
+        }
+        return false;
+    }
+    int result(Type input_x){
+        int result = 0;
+        Node<Type> *current_node = head;
+        while(current_node != NULL){
+            result += current_node->c * pow(input_x, current_node->e);
+            current_node = current_node->next;
+        }
+        return result;
+    }
+};
+
+int main(){
+    Sparse_polynomia<int> sparse_polynomia;
+    int m,c,e;
+    int x;
+    cin >> m;
+    for(int i = 0; i < m ;i++){
+        cin >> c >> e;
+        Node<int> *node = new Node<int>(c,e);
+        sparse_polynomia.insert(node, i);
+    }
+    cin >> x;
+    int result = sparse_polynomia.result(x);
+    cout << result;
+    return 0;
+}

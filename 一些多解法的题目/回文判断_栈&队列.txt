@@ -1,0 +1,117 @@
+#include <iostream>
+#include <cassert>
+using std::cin;
+using std::string;
+using std::cout;
+using std::endl;
+
+template <typename Type> class Stack{
+private:
+    Type *elements;
+    int max_size, top_index;
+public:
+    Stack(int size_input){
+        elements = new Type[size_input];
+        max_size = size_input;
+        top_index = -1;
+    }
+    ~Stack(){
+        delete[] elements;
+    }
+    bool push(Type element){
+        if(top_index > max_size - 1){
+            return false;
+        }
+        top_index++;
+        elements[top_index] = element;
+        return true;
+    }
+    bool pop(){
+        if(top_index < 0){
+            return false;
+        }
+        top_index--;
+        return true;
+    }
+    bool empty(){
+        return top_index<0;
+    }
+    Type top(){
+        assert(top_index>=0);
+        return elements[top_index];
+    }
+};
+
+template <typename Type> class Queue{
+private:
+    Type *data;
+    int head, tail, length;
+public:
+    Queue(int length_input){
+        data = new Type[length_input];
+        length = length_input;
+        head = 0;
+        tail = -1;
+    }
+    ~Queue(){
+        delete[] data;
+    }
+    bool push(Type element){
+        if(tail > length - 1){
+            return false;
+        }
+        tail++;
+        data[tail] = element;
+        return true;
+    }
+    void pop(){
+        head++;
+    }
+    Type front(){
+        return data[head];
+    }
+    bool empty(){
+        return head>tail;
+    }
+};
+
+
+int main(){
+    Stack<char> stack(20);
+    Queue<char> queue(20);
+    string str;
+    cin >> str;
+    int length_str = str.length();
+    for(int i = 0; i < length_str - 1; i++){
+        stack.push(str[i]);
+        queue.push(str[i]);
+    }
+    if(length_str % 2 == 0){
+        for(int i = 0; i < length_str/2 - 1; i++){
+            char a = stack.top();
+            stack.pop();
+            char b = queue.front();
+            queue.pop();
+            if(a != b){
+                cout << "false" << endl;
+                return 0;
+            }
+        }
+        cout << "true" << endl;
+        return 0;
+    }else{
+        for(int i = 0; i < length_str/2; i++){
+            char a = stack.top();
+            stack.pop();
+            char b = queue.front();
+            queue.pop();
+            if(a != b){
+                cout << "false" << endl;
+                return 0;
+            }
+        }
+        cout << "true" << endl;
+        return 0;
+    }
+    return 0;
+}
